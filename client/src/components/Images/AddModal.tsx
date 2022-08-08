@@ -1,12 +1,17 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import { Button, Grid, Modal, Box, Typography, TextField, useFormControl, FormControl, OutlinedInput, FormHelperText
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import moment from "moment";
 import AddIcon from '@mui/icons-material/Add';
 import SendIcon from '@mui/icons-material/Send';
-import { FileBase } from 'react-file-base64';
+
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { createReceipt } from '../../actions/receipts';
+import { CREATE } from '../../constants/actionTypes';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -20,35 +25,39 @@ const style = {
   borderRadius: 2
 };
 
-function MyFormHelperText() {
-  const { focused } = useFormControl() || {};
-
-  const helperText = React.useMemo(() => {
-    if (focused) {
-      return 'This field is being focused';
-    }
-
-    return 'Helper text';
-  }, [focused]);
-
-  return <FormHelperText>{helperText}</FormHelperText>;
-}
-
+const initialState = { receipt_note: '', receipt_image: '', receipt_date: '' };
 
 const AddModal = () => {
 	const [open, setOpen] = React.useState(false);
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
-	const [formData, setFormData] = React.useState(false);
-	const [value, setValue] = React.useState(new Date());
-	const handleChange = (newValue) => {
-		setValue(newValue);
-	};
+	const [form, setForm] = React.useState(initialState);
+	const [receiptDate, setReceiptDate] = React.useState<any | null>(new Date());
+	const [imageValue, setImageValue] = React.useState<any | String>(null);
 
 	const onSubmit = () => {
-		alert('hey');
+		dispatch(createReceipt(form));
 	}
+
+	const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+	React.useEffect(() => {
+		setForm({ ...form, receipt_date: receiptDate, receipt_image: imageValue });
+		console.log(imageValue)
+	}, [receiptDate, imageValue]);
+
+	const encodeImageFileAsURL = (element) => {
+		// https://stackoverflow.com/questions/6150289/how-can-i-convert-an-image-into-base64-string-using-javascript
+		var file = element.files[0];
+		var reader = new FileReader();
+		reader.onloadend = () => {
+			setImageValue(reader.result);
+		}
+		reader.readAsDataURL(file);
+	}  
 
   return (
 	<div>
@@ -74,15 +83,17 @@ const AddModal = () => {
 									<TextField
 										id="note"
 										label="Note"
+										name="receipt_note"
+										onChange={handleChange}
 									/>
 								</FormControl>
 							</Grid>
 							<Grid item xs={12}>
 								<FormControl fullWidth >
 									<DateTimePicker label="Date"
-									value={value}
-									onChange={handleChange}
-									renderInput={(params) => <TextField {...params} />}
+										value={receiptDate}
+										onChange={(newValue) => setReceiptDate(moment(newValue).format())}
+										renderInput={(params) => <TextField {...params} />}
 									/>
 								</FormControl>
 							</Grid>
@@ -92,7 +103,10 @@ const AddModal = () => {
 									<TextField
 										id="selectedFile"
 										type="file"
+										name="receipt_image"
+										onChange={(e) => encodeImageFileAsURL(e.target)}
 									/>
+									<img src="" alt="" />
 								</FormControl>
 							</Grid>
 						</Grid>

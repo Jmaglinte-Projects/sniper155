@@ -10,6 +10,9 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
+export const fetchReceipts = () => API.get('/receipts');
+export const createReceipt = (newReceipt) => API.post('/receipts/create', newReceipt);
+
 /** SAMPLE
   export const fetchPosts = () => API.get('/posts');
   export const createPost = (newPost) => API.post('/posts', newPost);

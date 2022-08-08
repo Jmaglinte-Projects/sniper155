@@ -5,7 +5,7 @@ import receipt from '../models/receipt.js';
 
 const router = express.Router();
 
-export const getReceipts = async (req, res) => {
+export const getReceipt = async (req, res) => {
     try {
         const result = await receipt.find();
 
@@ -15,32 +15,24 @@ export const getReceipts = async (req, res) => {
     }
 }
 
-/*
-export const getPost = async (req, res) => {
-    const { id } = req.params;
+export const createReceipt = async (req, res) => {
+    const data = req.body;
+
+    const result = new receipt({ ...data, 
+		receipt_creator_id: req.userId, 
+		created_at: new Date().toISOString()
+	});
 
     try {
-        const post = await PostMessage.findById(id);
+        await result.save();
 
-        res.status(200).json(post);
-    } catch (error) {
-        res.status(404).json({ message: error.message });
-    }
-}
-
-export const createPost = async (req, res) => {
-    const post = req.body;
-
-    const newPostMessage = new PostMessage({ ...post, creator: req.userId, createdAt: new Date().toISOString() })
-
-    try {
-        await newPostMessage.save();
-
-        res.status(201).json(newPostMessage );
+        res.status(201).json(result );
     } catch (error) {
         res.status(409).json({ message: error.message });
     }
 }
+
+/*
 
 export const updatePost = async (req, res) => {
     const { id } = req.params;
