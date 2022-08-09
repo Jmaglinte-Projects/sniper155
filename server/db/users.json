@@ -1,0 +1,24 @@
+[{
+  "_id": {
+    "$oid": "62f0aa92eb81437a906c5c55"
+  },
+  "email": "aclc.jaffymaglinte@gmail.com",
+  "password": "$2a$12$u9yBE7oNQSWr11VkoKpNnuxlKLJMHJA3UUCX9xBy8IF7GZ04Eibem",
+  "first_name": "Jaffy",
+  "last_name": "Maglinte",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62f0ab11c6b8246cec99e4f3"
+  },
+  "created_at": {
+    "$date": {
+      "$numberLong": "1659939569219"
+    }
+  },
+  "email": "j.maglinte@gmail.com",
+  "password": "$2a$12$n1m4raNVFc7ei5K3OCpcVe0olG1cI.5zdFyJnGNDGdfA8AfLLHphm",
+  "first_name": "Pusoy",
+  "last_name": "Dimagiba",
+  "__v": 0
+}]
