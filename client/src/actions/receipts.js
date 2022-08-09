@@ -1,25 +1,37 @@
 import { FETCH_ALL, CREATE, UPDATE, DELETE, LIKE } from '../constants/actionTypes';
-  import * as api from '../api/index.js';
+import * as api from '../api/index.js';
 
-  export const getReceipts = () => async (dispatch) => {
-    try {
-      const { data } = await api.fetchReceipts();
+export const getReceipts = () => async (dispatch) => {
+	try {
+		const { data } = await api.fetchReceipts();
 
-      dispatch({ type: FETCH_ALL, payload: data });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+		dispatch({ type: FETCH_ALL, payload: data });
+	} catch (error) {
+		console.log(error);
+	}
+};
 
-  export const createReceipt = (post) => async (dispatch) => {
-    try {
-      const { data } = await api.createReceipt(post);
+export const createReceipt = (formData, setModalVisible) => async (dispatch) => {
+	try {
+		const { data } = await api.createReceipt(formData);
 
-      dispatch({ type: CREATE, payload: data });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+		dispatch({ type: CREATE, payload: data });
+		setModalVisible(false);
+		
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export const deleteReceipt = (id) => async (dispatch) => {
+	try {
+		await api.deleteReceipt(id);
+
+		dispatch({ type: DELETE, payload: id });
+	} catch (error) {
+		console.log(error);
+	}
+};
 
 //   export const updatePost = (id, post) => async (dispatch) => {
 //     try {

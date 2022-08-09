@@ -1,54 +1,93 @@
 import * as React from 'react';
-import { ImageList, ImageListItem, ImageListItemBar, ListSubheader, IconButton, Button, Grid,
+import { useNavigate } from 'react-router-dom';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+
+import moment from "moment";
+import { Paper, ImageList, ImageListItem, ImageListItemBar, ListSubheader, IconButton, Button, Grid,
   Modal
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import AddModal from './AddModal';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+
+import { getReceipts, deleteReceipt } from '../../actions/receipts';
+
+
 
 export default function Images() {
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
-  return (
-    <>
+	const [user, setUser] = React.useState<any | null>(localStorage.getItem('profile'));
+  	const [userJson, setUserJson] = React.useState(JSON.parse(user));
+	const receipts = useAppSelector(state => state.receipts)
 
-      <ImageList>
-        <ImageListItem key="Subheader" cols={4}>
-          <ListSubheader component="div">
-            <Grid container spacing={2} maxWidth="xl">
-              <Grid item xs={12} lg={11}>
-                <span>December</span>
-              </Grid>
-              <Grid item>
-                <AddModal />
-              </Grid>
-            </Grid>
+	React.useEffect(() => {
+		dispatch(getReceipts());
+	}, [dispatch]);
 
-          </ListSubheader>
-        </ImageListItem>
-        {itemData.map((item) => (
-          <ImageListItem key={item.img}>
-            <img
-              src={`${item.img}?w=248&fit=crop&auto=format`}
-              srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-              alt={item.title}
-              loading="lazy"
-            />
-            <ImageListItemBar
-              title={item.title}
-              subtitle={item.author}
-              actionIcon={
-                <IconButton
-                  sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                  aria-label={`info about ${item.title}`}
-                >
-                  <InfoIcon />
-                </IconButton>
-              }
-            />
-          </ImageListItem>
-        ))}
-      </ImageList>
-    </>
-  );
+	const handleDelete = (id: number) => {
+		dispatch(deleteReceipt(id));
+	}
+
+	return (
+		<>
+		<ImageList id="receiptCon">
+			<ImageListItem key="Subheader" cols={2}>
+			<ListSubheader component="div">
+				<Grid container spacing={2} maxWidth="xl">
+					<Grid item xs={1} md={4} lg={11}>
+						<span>Khaeyud lang <i><b>@angkol</b></i> !!!</span>
+					</Grid>
+					<Grid item>
+						<AddModal />
+					</Grid>
+				</Grid>
+
+			</ListSubheader>
+			</ImageListItem>
+			{receipts.map((item) => (
+				<ImageListItem>
+					{userJson?.result ? (
+						<Paper
+							onClick={() => handleDelete(item._id)}
+							sx={{ boxShadow: 2, position: 'absolute', right: '6px', top: '6px',
+									backgroundColor: 'aliceblue',
+									color: '#e10000',
+									cursor: 'pointer',
+									borderRadius: '4px',
+									'&:hover': {
+										opacity: .6,
+									}
+								}}>
+							<DeleteIcon />
+						</Paper>
+					) : null}
+					
+					<img
+					key={item._id}
+					src={`${item.receipt_image}`}
+					alt={item.title}
+					loading="lazy"
+					/>
+					<ImageListItemBar
+						title={moment(item.receipt_date).format('YYYY/MM/DD')}
+						subtitle={`by: ${item.receipt_creator_id}`}
+						actionIcon={
+						<IconButton
+							sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+							aria-label={`info about ${item.receipt_creator_id}`}
+						>
+							<InfoIcon />
+						</IconButton>
+						}
+					/>
+				</ImageListItem>
+			))}
+		</ImageList>
+		</>
+	);
 }
 
 const itemData = [

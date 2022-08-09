@@ -1,14 +1,14 @@
 import express from 'express';
 
-import { getReceipt, createReceipt } from '../controllers/receipt.js';
+import { getReceipt, createReceipt, deleteReceipt } from '../controllers/receipt.js';
 
 const router = express.Router();
 import auth from "../middleware/auth.js";
 
 router.get('/', getReceipt);
-router.post('/create', auth,  createReceipt);
+router.post('/', auth,  createReceipt);
+router.delete('/:id', auth, deleteReceipt);
 // router.patch('/:id', auth, updatePost);
-// router.delete('/:id', auth, deletePost);
 // router.patch('/:id/likePost', auth, likePost);
 
 export default router;

@@ -32,6 +32,15 @@ export const createReceipt = async (req, res) => {
     }
 }
 
+export const deleteReceipt = async (req, res) => {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No receipt with id: ${id}`);
+
+    await receipt.findByIdAndRemove(id);
+
+    res.json({ message: "Receipt deleted successfully." });
+}
+
 /*
 
 export const updatePost = async (req, res) => {
@@ -47,15 +56,7 @@ export const updatePost = async (req, res) => {
     res.json(updatedPost);
 }
 
-export const deletePost = async (req, res) => {
-    const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
-
-    await PostMessage.findByIdAndRemove(id);
-
-    res.json({ message: "Post deleted successfully." });
-}
 
 export const likePost = async (req, res) => {
     const { id } = req.params;

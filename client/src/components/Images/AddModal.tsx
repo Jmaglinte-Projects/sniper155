@@ -10,8 +10,7 @@ import AddIcon from '@mui/icons-material/Add';
 import SendIcon from '@mui/icons-material/Send';
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { createReceipt } from '../../actions/receipts';
-import { CREATE } from '../../constants/actionTypes';
+import { createReceipt, getReceipts } from '../../actions/receipts';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -28,25 +27,32 @@ const style = {
 const initialState = { receipt_note: '', receipt_image: '', receipt_date: '' };
 
 const AddModal = () => {
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 	const [open, setOpen] = React.useState(false);
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
-	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
 
 	const [form, setForm] = React.useState(initialState);
 	const [receiptDate, setReceiptDate] = React.useState<any | null>(new Date());
 	const [imageValue, setImageValue] = React.useState<any | String>(null);
+	const [user, setUser] = React.useState<any | null>(localStorage.getItem('profile'));
+  	const [userJson, setUserJson] = React.useState(JSON.parse(user));
 
 	const onSubmit = () => {
-		dispatch(createReceipt(form));
+		dispatch(createReceipt(form, setOpen));
+		
 	}
 
 	const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
 	React.useEffect(() => {
+		dispatch(getReceipts());
+	}, []);
+	
+
+	React.useEffect(() => {
 		setForm({ ...form, receipt_date: receiptDate, receipt_image: imageValue });
-		console.log(imageValue)
 	}, [receiptDate, imageValue]);
 
 	const encodeImageFileAsURL = (element) => {
@@ -61,9 +67,12 @@ const AddModal = () => {
 
   return (
 	<div>
-		<Button onClick={handleOpen} variant="contained" endIcon={<AddIcon />}>
-			Add
-		</Button>
+		{userJson?.result ? (
+			<Button onClick={handleOpen} variant="contained" startIcon={<AddIcon />}>
+				Add
+			</Button>) 
+		: null }
+		
 		<Modal
 		open={open}
 		onClose={handleClose}

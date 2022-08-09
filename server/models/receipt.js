@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 
 const receiptSchema = mongoose.Schema({
-    receipt_note: String,
-    receipt_creator_id: String,
-    receipt_image: String,
-    receipt_date: Date,
+    receipt_note: { type: String, required:  true },
+    receipt_creator_id: { type: String, required:  true },
+    receipt_image: { type: String, required:  true },
+    receipt_date: { type: Date, required:  true },
     created_at: {
         type: Date,
         default: new Date(),

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
-import { signin, signup } from '../../actions/auth';
+import { signin } from '../../actions/auth';
 import { AUTH } from '../../constants/actionTypes';
 
 import Avatar from '@mui/material/Avatar';
@@ -19,8 +19,6 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-
-import { getPosts } from '../../actions/posts';
 
 const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' };
 
@@ -44,13 +42,8 @@ export default function SignInSide() {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
-	React.useEffect(() => {
-		dispatch(getPosts());
-	}, []);
-
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		console.log(form);
 		dispatch(signin(form, navigate));
 	};
 
