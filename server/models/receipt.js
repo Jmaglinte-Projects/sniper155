@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 
 const receiptSchema = mongoose.Schema({
     receipt_note: { type: String, required:  true },
-    receipt_creator_id: { type: String, required:  true },
     receipt_image: { type: String, required:  true },
     receipt_date: { type: Date, required:  true },
     created_at: {
@@ -13,6 +12,9 @@ const receiptSchema = mongoose.Schema({
         type: Date,
         default: new Date(),
     },
+	receipt_creator: { type: mongoose.SchemaTypes.ObjectId, 
+		ref: "User"
+	},
 })
 
 var receipt = mongoose.model('receipt', receiptSchema);

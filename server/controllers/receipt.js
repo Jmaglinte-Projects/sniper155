@@ -7,8 +7,7 @@ const router = express.Router();
 
 export const getReceipt = async (req, res) => {
     try {
-        const result = await receipt.find();
-
+        const result = await receipt.find().populate("receipt_creator");
         res.status(200).json(result);
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -19,14 +18,14 @@ export const createReceipt = async (req, res) => {
     const data = req.body;
 
     const result = new receipt({ ...data, 
-		receipt_creator_id: req.userId, 
+		receipt_creator: req.userId, 
 		created_at: new Date().toISOString()
 	});
 
     try {
         await result.save();
 
-        res.status(201).json(result );
+        res.status(201).json(await receipt.findById(result._id).populate("receipt_creator"));
     } catch (error) {
         res.status(409).json({ message: error.message });
     }

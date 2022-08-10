@@ -35,17 +35,16 @@ export default function Images() {
 		<>
 		<ImageList id="receiptCon">
 			<ImageListItem key="Subheader" cols={2}>
-			<ListSubheader component="div">
-				<Grid container spacing={2} maxWidth="xl">
-					<Grid item xs={1} md={4} lg={11}>
-						<span>Khaeyud lang <i><b>@angkol</b></i> !!!</span>
+				<ListSubheader component="div">
+					<Grid container spacing={2} maxWidth="xl">
+						<Grid item xs={1} md={4} lg={11}>
+							<span>Khaeyud lang <i><b>@angkol</b></i> !!!</span>
+						</Grid>
+						<Grid item>
+							<AddModal />
+						</Grid>
 					</Grid>
-					<Grid item>
-						<AddModal />
-					</Grid>
-				</Grid>
-
-			</ListSubheader>
+				</ListSubheader>
 			</ImageListItem>
 			{receipts.map((item) => (
 				<ImageListItem>

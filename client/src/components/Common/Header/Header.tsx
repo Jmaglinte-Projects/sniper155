@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { Link, useLocation } from "react-router-dom";
 import decode from 'jwt-decode';
-import { AppBar, Button, TextField, Box, Menu, Toolbar, IconButton, Typography, Container, Avatar, Tooltip, MenuItem } from '@mui/material';
+import { AppBar, Grid, Button, TextField, Box, Menu, Toolbar, IconButton, Typography, Container, Avatar, Tooltip, MenuItem } from '@mui/material';
 import LoginIcon from '@mui/icons-material/Login';
 import MenuIcon from '@mui/icons-material/Menu';
 import AdbIcon from '@mui/icons-material/Adb';
 import  './styles.scss';
+import mainLogo from './../../../assets/images/main-logo.png';
 
 import { useAppSelector, useAppDispatch } from '../../../app/hooks';
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +20,7 @@ const pages = [
 		link: '/'
 	}
 ];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Logout'];
 
 const Header = () => {
 
@@ -71,7 +72,9 @@ const Header = () => {
 		<AppBar position="static">
 		<Container maxWidth="xl">
 			<Toolbar disableGutters>
-			<AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+			<Grid container
+				sx={{ width: '60px', marginRight: '10px' }}
+			><img src={mainLogo} /></Grid>
 			<Typography
 				variant="h6"
 				noWrap
