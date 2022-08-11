@@ -16,8 +16,8 @@ import * as actionType from '../../../constants/actionTypes';
 const pages = [
 	{
 		id: 1,
-		title: 'Receipts',
-		link: '/'
+		title: 'Receipt',
+		link: '/receipt'
 	}
 ];
 const settings = ['Logout'];
@@ -70,135 +70,119 @@ const Header = () => {
 
 	return (
 		<AppBar position="static">
-		<Container maxWidth="xl">
-			<Toolbar disableGutters>
-			<Grid container
-				sx={{ width: '60px', marginRight: '10px' }}
-			><img src={mainLogo} /></Grid>
-			<Typography
-				variant="h6"
-				noWrap
-				component="a"
-				href="/"
-				sx={{
-				mr: 2,
-				display: { xs: 'none', md: 'flex' },
-				fontFamily: 'monospace',
-				fontWeight: 700,
-				letterSpacing: '.3rem',
-				color: 'inherit',
-				textDecoration: 'none',
-				}}
-			>
-				SNIPER155
-			</Typography>
-
-			<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-				<IconButton
-				size="large"
-				aria-label="account of current user"
-				aria-controls="menu-appbar"
-				aria-haspopup="true"
-				onClick={handleOpenNavMenu}
-				color="inherit"
+		<div id='customHead' style={{ position: 'relative', width: '100%' }}>
+			<Container>
+				<Toolbar disableGutters sx={{ position: 'relative', zIndex: '5' }}>
+				<Grid container
+					sx={{ width: '130px', marginRight: '10px',
+						display: { xs: 'none', md: 'flex' }
+					}}
 				>
-				<MenuIcon />
-				</IconButton>
-				<Menu
-				id="menu-appbar"
-				anchorEl={anchorElNav}
-				anchorOrigin={{
-					vertical: 'bottom',
-					horizontal: 'left',
-				}}
-				keepMounted
-				transformOrigin={{
-					vertical: 'top',
-					horizontal: 'left',
-				}}
-				open={Boolean(anchorElNav)}
-				onClose={handleCloseNavMenu}
-				sx={{
-					display: { xs: 'block', md: 'none' },
-				}}
+					<Link to="/"><img src={mainLogo} /></Link>
+				</Grid>
+				<Typography
+					variant="h6"
+					noWrap
+					component="a"
+					href="/"
+					sx={{
+						mr: 2,
+						display: { xs: 'none', md: 'flex' },
+						fontFamily: 'monospace',
+						fontWeight: 700,
+						letterSpacing: '.3rem',
+						color: 'inherit',
+						textDecoration: 'none',
+					}}
 				>
-				{pages.map((page) => (
-					<MenuItem key={page.id} onClick={handleCloseNavMenu}>
-					<Typography textAlign="center">{page.title}</Typography>
-					</MenuItem>
-				))}
-				</Menu>
-			</Box>
-			<AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-			<Typography
-				variant="h5"
-				noWrap
-				component="a"
-				href=""
-				sx={{
-				mr: 2,
-				display: { xs: 'flex', md: 'none' },
-				flexGrow: 1,
-				fontFamily: 'monospace',
-				fontWeight: 700,
-				letterSpacing: '.3rem',
-				color: 'inherit',
-				textDecoration: 'none',
-				}}
-			>
-				LOGO
-			</Typography>
-			<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-				{pages.map((page) => (
-			
-				<Link className="navLink" key={page.id} to={page.link} >
-					{page.title}
-				</Link>
-				))}
-			</Box>
+				</Typography>
 
-			<Box sx={{ flexGrow: 0 }}>
-
-				{userJson?.result ? (
-				<>
-					<Tooltip title="Open settings">
-					<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-						<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+				<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+					<IconButton
+					size="large"
+					aria-label="account of current user"
+					aria-controls="menu-appbar"
+					aria-haspopup="true"
+					onClick={handleOpenNavMenu}
+					color="inherit"
+					>
+					<MenuIcon />
 					</IconButton>
-					</Tooltip>
 					<Menu
-					sx={{ mt: '45px' }}
 					id="menu-appbar"
-					anchorEl={anchorElUser}
+					anchorEl={anchorElNav}
 					anchorOrigin={{
-						vertical: 'top',
-						horizontal: 'right',
+						vertical: 'bottom',
+						horizontal: 'left',
 					}}
 					keepMounted
 					transformOrigin={{
 						vertical: 'top',
-						horizontal: 'right',
+						horizontal: 'left',
 					}}
-					open={Boolean(anchorElUser)}
-					onClose={handleCloseUserMenu}
+					open={Boolean(anchorElNav)}
+					onClose={handleCloseNavMenu}
+					sx={{
+						display: { xs: 'block', md: 'none' },
+					}}
 					>
-					{settings.map((setting) => (
-						<MenuItem key={setting} onClick={handleCloseUserMenu}>
-						<Typography textAlign="center" onClick={setting == 'Logout' ? logout: () => {}}>{setting}</Typography>
+					{pages.map((page) => (
+						<MenuItem key={page.id} onClick={handleCloseNavMenu}>
+						<Typography textAlign="center">{page.title}</Typography>
 						</MenuItem>
 					))}
 					</Menu>
-				</>
-				) : (
-				<Button variant="contained" startIcon={<LoginIcon />} onClick= { () => navigate('/signin')}>
-					Signin
-				</Button>
-				)}
+				</Box>
+				<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }} className="mainNav">
+					{pages.map((page) => (
+				
+					<Link className="navLink" key={page.id} to={page.link}>
+						{page.title}
+					</Link>
+					))}
+				</Box>
 
+				<Box sx={{ flexGrow: 0 }}>
 
-			</Box>
-			</Toolbar>
-		</Container>
+					{userJson?.result ? (
+					<>
+						<Tooltip title="Open settings">
+						<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+							<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+						</IconButton>
+						</Tooltip>
+						<Menu
+						sx={{ mt: '45px' }}
+						id="menu-appbar"
+						anchorEl={anchorElUser}
+						anchorOrigin={{
+							vertical: 'top',
+							horizontal: 'right',
+						}}
+						keepMounted
+						transformOrigin={{
+							vertical: 'top',
+							horizontal: 'right',
+						}}
+						open={Boolean(anchorElUser)}
+						onClose={handleCloseUserMenu}
+						>
+						{settings.map((setting) => (
+							<MenuItem key={setting} onClick={handleCloseUserMenu}>
+							<Typography textAlign="center" onClick={setting == 'Logout' ? logout: () => {}}>{setting}</Typography>
+							</MenuItem>
+						))}
+						</Menu>
+					</>
+					) : (
+					<Button variant="contained" startIcon={<LoginIcon />} onClick= { () => navigate('/signin')}>
+						Signin
+					</Button>
+					)}
+				</Box>
+				</Toolbar>
+			</Container>
+		</div>
 		</AppBar>
 	);
 };

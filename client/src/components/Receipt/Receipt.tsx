@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-
+import Swal from 'sweetalert2';
 import moment from "moment";
-import { Paper, ImageList, ImageListItem, ImageListItemBar, ListSubheader, IconButton, Button, Grid,
+import { Container, Paper, ImageList, ImageListItem, ImageListItemBar, ListSubheader, IconButton, Button, Grid,
   Modal
 } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
+import sniper155 from '../../assets/images/sniper155.jpg';
 
 import ImageDialog from './ImageDialog';
 import AddModal from './AddModal';
@@ -23,13 +25,25 @@ export default function Images() {
 	const receipts = useAppSelector(state => state.receipts)
 	const [openDialog, setOpenDialog] = React.useState(false);
 	const [imageDialog, setImageDialog] = React.useState("");
+	
+	let counter: number = 0;
 
 	React.useEffect(() => {
 		dispatch(getReceipts());
 	}, [dispatch]);
 	
 	const handleDelete = (id: number) => {
-		dispatch(deleteReceipt(id));
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "You won't be able to revert this!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Yes, delete it!',
+			cancelButtonText: 'No, cancel!',
+			reverseButtons: true
+		}).then((result) => {
+			if (result.isConfirmed) dispatch(deleteReceipt(id));
+		})
 	}
 
 	const handleOpen = (data) => {
@@ -38,63 +52,68 @@ export default function Images() {
 	}
 
 	return (
-		<>
-		<ImageDialog openDialog={openDialog} updateDialog={setOpenDialog} image={imageDialog} />
-		<Grid container spacing={2} alignItems="stretch" >
-			<Grid item xs={12} md={12}>
-				<Grid container justifyContent="space-between" spacing={2}>
-					<Grid item xs={12} sm={10} md={10}>
-						<span>Khaeyud lang <i><b>@angkol</b></i> !!!</span>
-					</Grid>
-					<Grid item>
-						<AddModal />
+		<Container sx={{mt: '25px'}}>
+			<ImageDialog openDialog={openDialog} updateDialog={setOpenDialog} image={imageDialog} />
+			<Grid container spacing={2} alignItems="stretch" >
+				<Grid item xs={12} md={12}>
+					<Grid container justifyContent="space-between" spacing={2}>
+						<Grid item xs={12} sm={10} md={10}>
+							<span>Khaeyud lang <i><b>@angkol</b></i> !!!</span>
+						</Grid>
+						<Grid item>
+							<AddModal />
+						</Grid>
 					</Grid>
 				</Grid>
+				{receipts.map((item) => {
+					++counter
+					return (
+						<Grid item xs={12} sm={8} md={counter === 7 ? 12: 4} sx={{
+								overflow: 'hidden',
+								cursor: 'pointer',
+								"&:hover img": {
+									transition: 'all .4s ease',
+									transform: 'scale(1.1)'
+								}
+							}}
+						>
+							<ImageListItem style={{ height: '100%' }}>
+								{userJson?.result ? (
+									<Paper
+										onClick={() => handleDelete(item._id)}
+										sx={{ boxShadow: 2, position: 'absolute', right: '6px', top: '6px',
+												zIndex: '2',
+												backgroundColor: 'aliceblue',
+												color: '#e10000',
+												cursor: 'pointer',
+												borderRadius: '4px',
+												'&:hover': {
+													opacity: .6,
+												}
+											}}>
+										<DeleteForeverIcon />
+									</Paper>
+								) : null}
+								
+								<img
+									key={item._id}
+									src={`${item.receipt_image}`}
+									alt={item.title}
+									loading="lazy"
+									style={{ transition: 'all .2s ease' }}
+									onClick={ () => handleOpen(item) }
+								/>
+								<ImageListItemBar
+									title={moment(item.receipt_date).format('YYYY/MM/DD')}
+									subtitle={`by: ${item.receipt_creator.first_name}`}
+									onClick={ () => handleOpen(item) }
+								/>
+							</ImageListItem>
+						</Grid>	
+					)
+				})}
 			</Grid>
-			{receipts.map((item) => (
-				<Grid item xs={12} sm={8} md={4} sx={{
-						overflow: 'hidden',
-						cursor: 'pointer',
-						"&:hover img": {
-							transition: 'all .4s ease',
-							transform: 'scale(1.1)'
-						}
-					}} 
-					onClick={ () => handleOpen(item) }
-				>
-					<ImageListItem >
-						{userJson?.result ? (
-							<Paper
-								onClick={() => handleDelete(item._id)}
-								sx={{ boxShadow: 2, position: 'absolute', right: '6px', top: '6px',
-										backgroundColor: 'aliceblue',
-										color: '#e10000',
-										cursor: 'pointer',
-										borderRadius: '4px',
-										'&:hover': {
-											opacity: .6,
-										}
-									}}>
-								<DeleteForeverIcon />
-							</Paper>
-						) : null}
-						
-						<img
-							key={item._id}
-							src={`${item.receipt_image}`}
-							alt={item.title}
-							loading="lazy"
-							style={{ transition: 'all .2s ease' }}
-						/>
-						<ImageListItemBar
-							title={moment(item.receipt_date).format('YYYY/MM/DD')}
-							subtitle={`by: ${item.receipt_creator.first_name}`}
-						/>
-					</ImageListItem>
-				</Grid>
-			))}
-		</Grid>
-		</>
+		</Container>
 	);
 }
 

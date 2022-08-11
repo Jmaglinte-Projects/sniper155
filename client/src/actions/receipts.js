@@ -1,5 +1,6 @@
 import { FETCH_ALL, CREATE, UPDATE, DELETE, LIKE } from '../constants/actionTypes';
 import * as api from '../api/index.js';
+import Swal from 'sweetalert2';
 
 export const getReceipts = () => async (dispatch) => {
 	try {
@@ -18,6 +19,12 @@ export const createReceipt = (formData, setModalVisible) => async (dispatch) => 
 		dispatch({ type: CREATE, payload: data });
 		setModalVisible(false);
 		
+		Swal.fire(
+			'Created!',
+			'Receipt has been created.',
+			'success'
+		)
+
 	} catch (error) {
 		console.log(error);
 	}
@@ -28,6 +35,11 @@ export const deleteReceipt = (id) => async (dispatch) => {
 		await api.deleteReceipt(id);
 
 		dispatch({ type: DELETE, payload: id });
+		Swal.fire(
+			'Deleted!',
+			'Receipt been deleted.',
+			'success'
+		)
 	} catch (error) {
 		console.log(error);
 	}

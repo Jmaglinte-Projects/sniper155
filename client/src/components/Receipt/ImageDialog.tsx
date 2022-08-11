@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 
 const ImageDialog = (props) => {
-	console.log(props)
 	const handleClose = () => {
 		props.updateDialog(false)
 	}
