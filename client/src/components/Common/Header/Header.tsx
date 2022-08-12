@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import decode from 'jwt-decode';
 import { AppBar, Grid, Button, TextField, Box, Menu, Toolbar, IconButton, Typography, Container, Avatar, Tooltip, MenuItem } from '@mui/material';
 import LoginIcon from '@mui/icons-material/Login';
@@ -128,7 +128,11 @@ const Header = () => {
 					>
 					{pages.map((page) => (
 						<MenuItem key={page.id} onClick={handleCloseNavMenu}>
-						<Typography textAlign="center">{page.title}</Typography>
+						<Typography textAlign="center">
+							<NavLink key={page.id} to={page.link} style={{ color: '#000', textDecoration: 'none' }} >
+								{page.title}
+							</NavLink>
+							</Typography>
 						</MenuItem>
 					))}
 					</Menu>
@@ -136,10 +140,25 @@ const Header = () => {
 				<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }} className="mainNav">
 					{pages.map((page) => (
 				
-					<Link className="navLink" key={page.id} to={page.link}>
+					<NavLink className="navLink" key={page.id} to={page.link}>
 						{page.title}
-					</Link>
+					</NavLink>
 					))}
+				</Box>
+
+				<Box
+					sx={{
+						mr: 2,
+						display: { xs: 'flex', md: 'none' },
+						flexGrow: 1,
+						fontFamily: 'monospace',
+						fontWeight: 700,
+						letterSpacing: '.3rem',
+						color: 'inherit',
+						textDecoration: 'none',
+					}}
+				>
+					<Link to="/"><img src={mainLogo} style ={{  width: '130px', }} /></Link>
 				</Box>
 
 				<Box sx={{ flexGrow: 0 }}>

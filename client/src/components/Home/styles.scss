@@ -31,3 +31,47 @@
 		font-family: 'Montserrat', sans-serif;
 	}
 }
+
+// Breakpoints
+@media (max-width:1100px){
+	#banner {
+		.images {
+			width: 335px;
+		}
+		.info {
+			left: 420px;
+		}
+	}
+}
+@media (max-width:900px){
+	#banner {
+		.images {
+			width: 260px;
+		}
+		.info {
+			left: 345px;
+		}
+	}
+}
+@media (max-width:600px){
+	#banner {
+		.images {
+			width: 100%;
+			text-align: center;
+			margin: 0 0 120px;
+
+			.mini2{
+				right: 0;
+			}
+			.mini3{
+				right: 0;
+			}
+		}
+		.info {
+			position: static;
+			display: block;
+			text-align: center;
+			padding: 45px 0;
+		}
+	}
+}

@@ -23,7 +23,7 @@ const theme = createTheme({
 function App() {
   return (
 	<ThemeProvider theme={theme}>
-		<div className="App">
+		<div className="App clearfix">
 			<div style={{ display: 'block'}}>
 				<Header />
 			</div>
