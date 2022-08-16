@@ -11,7 +11,7 @@ const ImageDialog = (props) => {
 			open={props.openDialog}
 			onClose={handleClose}
 			fullWidth={true}
-			maxWidth='xl'
+			maxWidth='md'
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 			>

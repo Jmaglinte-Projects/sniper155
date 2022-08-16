@@ -194,9 +194,11 @@ const Header = () => {
 						</Menu>
 					</>
 					) : (
-					<Button variant="contained" startIcon={<LoginIcon />} onClick= { () => navigate('/signin')}>
-						Signin
-					</Button>
+						<Box sx={{ cursor: 'pointer', "&:hover": {
+							color: '#fff'
+						} }}>
+							<LoginIcon onClick= { () => navigate('/signin')} />
+						</Box>
 					)}
 				</Box>
 				</Toolbar>

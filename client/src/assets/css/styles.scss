@@ -4,15 +4,8 @@
 
 *, *:before, *:after { box-sizing: border-box; -moz-box-sizing: border-box; image-rendering: -webkit-optimize-contrast;}
 img{max-width: 100%; vertical-align: top; image-rendering: -webkit-optimize-contrast;}
-body {
-	margin: 0;
-	position: relative;
-	overflow-x: hidden;
-}
-
+body { margin: 0; position: relative; overflow-x: hidden; }
 .clearfix { clear: both; overflow: hidden; }
-
-img {
-	max-width: 100%;
-}
+a { transition: all 0.7s ease; }
+img { max-width: 100%; }
 
